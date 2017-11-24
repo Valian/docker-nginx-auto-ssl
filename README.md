@@ -1,4 +1,7 @@
 # docker-nginx-auto-ssl
+![build](https://img.shields.io/docker/build/valian/docker-nginx-auto-ssl.svg)
+![pulls](https://img.shields.io/docker/pulls/valian/docker-nginx-auto-ssl.svg)
+
 Docker image for automatic generation of SSL certs using Let's encrypt and Open Resty, with reasonable SSL settings. 
 You can specify allowed domains using ENV variable, and easily override `nginx.conf` to your needs. 
 
