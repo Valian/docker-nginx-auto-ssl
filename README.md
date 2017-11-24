@@ -16,8 +16,8 @@ docker run -d \
 
 Created certs are kept in `/etc/resty-auto-ssl` directory. It's volume by default, but you may want to mount it to some directory on the host.
 
-All options:
-**ALLOWED_DOMAINS** - [lua pattern](http://lua-users.org/wiki/PatternsTutorial) of allowed domains. We're using `string.match`
+All options:  
+**ALLOWED_DOMAINS** - [lua pattern](http://lua-users.org/wiki/PatternsTutorial) of allowed domains. We're using `string.match`  
 **DIFFIE_HELLMAN** - force regeneration of `dhparam.pem`. If not specified, default one is used.
 
 Advanced usage:
