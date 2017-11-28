@@ -19,8 +19,8 @@ docker run -d \
 Created certs are kept in `/etc/resty-auto-ssl` directory. It's volume by default, but you may want to mount it to some directory on the host.
 
 All options:  
-**ALLOWED_DOMAINS** - [lua pattern](http://lua-users.org/wiki/PatternsTutorial) of allowed domains. We're using `string.match`  
-**DIFFIE_HELLMAN** - force regeneration of `dhparam.pem`. If not specified, default one is used.
+* **ALLOWED_DOMAINS** - [lua pattern](http://lua-users.org/wiki/PatternsTutorial) of allowed domains. Internally, we're using `string.match`. Examples: `example.com`, `(www|api).example.com`, `([a-z]+.)?example.com`
+* **DIFFIE_HELLMAN** - force regeneration of `dhparam.pem`. If not specified, default one is used.
 
 Advanced usage:
 ```Bash
@@ -29,7 +29,7 @@ docker run -d \
   --restart on-failure \
   -p 80:80 \
   -p 443:443 \
-  -e ALLOWED_DOMAINS=.*example.com \
+  -e ALLOWED_DOMAINS=example.com \
   -e DIFFIE_HELLMAN=true \
   -v ssl-data:/etc/resty-auto-ssl \
   valian/docker-nginx-auto-ssl
@@ -62,7 +62,7 @@ http {
     include ssl.conf;
     include resty-server-https.conf;
     
-    # you should add provide your own locations here
+    # you should add your own locations here
     
   }
 
