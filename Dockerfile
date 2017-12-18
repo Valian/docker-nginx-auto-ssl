@@ -12,7 +12,9 @@ RUN apk --no-cache add bash openssl \
     -subj '/CN=sni-support-required-for-valid-ssl' \
     -keyout /etc/ssl/resty-auto-ssl-fallback.key \
     -out /etc/ssl/resty-auto-ssl-fallback.crt \
- && openssl dhparam -out /usr/local/openresty/nginx/conf/dhparam.pem 2048
+ && openssl dhparam -out /usr/local/openresty/nginx/conf/dhparam.pem 2048 \
+ # let's remove default open resty configuration, we'll conditionally add modified version in entrypoint.sh
+ && rm /etc/nginx/conf.d/default.conf
 
 COPY nginx.conf snippets /usr/local/openresty/nginx/conf/
 COPY entrypoint.sh /entrypoint.sh
