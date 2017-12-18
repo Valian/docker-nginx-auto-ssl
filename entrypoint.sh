@@ -49,6 +49,11 @@ elif [ ! "$(ls -A ${NGINX_CONF_DIR})" ]; then
 fi
 
 
+if [ "$FORCE_HTTPS" == "true" ]; then
+  echo "include force-https.conf;" >> ${RESTY_CONF_DIR}/resty-server-http.conf
+fi
+
+
 # let's substitute $ALLOWED_DOMAINS into OpenResty configuration
 envsubst '$ALLOWED_DOMAINS' \
   < ${RESTY_CONF_DIR}/resty-http.conf \
