@@ -201,6 +201,7 @@ docker run [YOUR_OPTIONS] docker-nginx-auto-ssl
 
 # CHANGELOG
 
+* **29-05-2017** - Fixed duplicate redirect location after container restart #2
 * **19-12-2017** - Support for `$SITES` variable   
 * **2-12-2017** - Dropped HSTS by default  
 * **25-11-2017** - Initial release  

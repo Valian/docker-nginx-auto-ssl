@@ -50,7 +50,11 @@ fi
 
 
 if [ "$FORCE_HTTPS" == "true" ]; then
-  echo "include force-https.conf;" >> ${RESTY_CONF_DIR}/resty-server-http.conf
+  # only do this, if it's first run
+  if ! grep -q "force-https.conf" ${RESTY_CONF_DIR}/resty-server-http.conf
+  then
+    echo "include force-https.conf;" >> ${RESTY_CONF_DIR}/resty-server-http.conf
+  fi
 fi
 
 
