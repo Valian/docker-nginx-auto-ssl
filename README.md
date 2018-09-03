@@ -29,6 +29,7 @@ Available configuration options:
  | DIFFIE_HELLMAN | `true` | Force regeneration of `dhparam.pem`. If not specified, default one is used. |
  | SITES | `db.com=localhost:5432; *.app.com=localhost:8080`, `_=localhost:8080` | Shortcut for defining multiple proxies, in form of `domain1=endpoint1; domain2=endpoint2`. Default template for proxy is [here](https://github.com/Valian/docker-nginx-auto-ssl/blob/master/snippets/server-proxy.conf). Name `_` means default server, just like in nginx configuration |
  | FORCE_HTTPS | `true`, `false` | If `true`, automatically adds location to `resty-server-http.conf` redirecting traffic from http to https. `true` by default. |
+ | LETSENCRYPT_URL | `https://acme-v01.api.letsencrypt.org/directory`, `https://acme-staging.api.letsencrypt.org/directory` | Let's Encrypt server URL to use |
  
 
 If you want to proxy multiple sites (probably the most common case, that's why I've made it possible to achieve without custom configuration):
