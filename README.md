@@ -1,5 +1,5 @@
 # docker-nginx-auto-ssl
-*The simpliest solution to add SSL to your site*
+*The simpliest solution to add SSL cert to your site*
 
 ![build](https://img.shields.io/docker/build/valian/docker-nginx-auto-ssl.svg)
 ![build](https://img.shields.io/docker/pulls/valian/docker-nginx-auto-ssl.svg)
@@ -13,7 +13,7 @@ This is possible thanks to [OpenResty](https://github.com/openresty/openresty) a
 
 # Usage
 
-Quick start to generate and auto-renew certs for my blog / application:
+Quick start to generate and auto-renew certs for your blog / application:
 
 ```Bash
 # replace these values
@@ -25,12 +25,13 @@ docker run -d \
   --name nginx-auto-ssl \
   --restart on-failure \
   --network host \
-  -p 80:80 \
-  -p 443:443 \
   -e ALLOWED_DOMAINS="$DOMAIN" \
   -e SITES="$DOMAIN=$APP_ADDRESS" \
   -v ssl-data:/etc/resty-auto-ssl \
   valian/docker-nginx-auto-ssl
+
+# display logs from container, to check if everything is fine.
+docker logs nginx-auto-ssl
 ```
 
 [Docker-compose](https://docs.docker.com/compose/) example:
