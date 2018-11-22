@@ -1,4 +1,6 @@
 # docker-nginx-auto-ssl
+*The simpliest solution to add SSL to your site*
+
 ![build](https://img.shields.io/docker/build/valian/docker-nginx-auto-ssl.svg)
 ![build](https://img.shields.io/docker/pulls/valian/docker-nginx-auto-ssl.svg)
 
@@ -11,15 +13,58 @@ This is possible thanks to [OpenResty](https://github.com/openresty/openresty) a
 
 # Usage
 
-Basic usage:
+Quick start to generate and auto-renew certs for my blog / application:
+
 ```Bash
+# replace these values
+export DOMAIN=yourdomain.com
+export APP_ADDRESS=localhost:8080
+
+# install docker first, and then run following command
 docker run -d \
+  --name nginx-auto-ssl \
+  --restart on-failure \
+  --network host \
   -p 80:80 \
   -p 443:443 \
+  -e ALLOWED_DOMAINS="$DOMAIN" \
+  -e SITES="$DOMAIN=$APP_ADDRESS" \
+  -v ssl-data:/etc/resty-auto-ssl \
   valian/docker-nginx-auto-ssl
 ```
 
-Created certs are kept in `/etc/resty-auto-ssl` directory. It's volume by default, but you may want to mount it to some directory on the host.
+[Docker-compose](https://docs.docker.com/compose/) example:
+
+```yaml
+# docker-compose.yml
+version: '2'
+services:
+  nginx:
+    image: valian/docker-nginx-auto-ssl
+    restart: on-failure
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ssl_data:/etc/resty-auto-ssl
+    environment:
+      ALLOWED_DOMAINS: 'yourdomain.com'
+      SITES: 'yourdomain.com=myapp:80'
+  
+  # your application, listening on port specified in `SITES` env variable
+  myapp:
+    image: nginx
+
+volumes:
+  ssl_data:
+```
+
+start using
+```Bash
+docker-compose up -d
+```
+
+Both cases will work when request to `yourdomain.com` will reach just-deployed nginx (so when it will be running on your server, with correctly defined DNS entry).
 
 Available configuration options: 
 
@@ -42,20 +87,6 @@ docker run -d \
   -p 443:443 \
   -e ALLOWED_DOMAINS=example.com \
   -e SITES='example.com=localhost:5432;*.example.com=localhost:8080' \
-  valian/docker-nginx-auto-ssl
-```
-
-All options:
-```Bash
-docker run -d \
-  --name nginx-auto-ssl \
-  --restart on-failure \
-  -p 80:80 \
-  -p 443:443 \
-  -e ALLOWED_DOMAINS=example.com \
-  -e SITES='example.com=localhost:5432;*.example.com=localhost:8080' \
-  -e DIFFIE_HELLMAN=true \
-  -v ssl-data:/etc/resty-auto-ssl \
   valian/docker-nginx-auto-ssl
 ```
 
