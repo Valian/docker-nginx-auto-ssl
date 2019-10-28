@@ -1,7 +1,7 @@
 FROM openresty/openresty:alpine-fat
 
 # allowed domains should be lua match pattern
-ENV DIFFIE_HELLMAN='' ALLOWED_DOMAINS='.*' AUTO_SSL_VERSION='0.11.1' FORCE_HTTPS='true' SITES='' LETSENCRYPT_URL='https://acme-v01.api.letsencrypt.org/directory'
+ENV DIFFIE_HELLMAN='' ALLOWED_DOMAINS='.*' AUTO_SSL_VERSION='0.13.1' FORCE_HTTPS='true' SITES='' LETSENCRYPT_URL='https://acme-v02.api.letsencrypt.org/directory'
 
 # Here we install open resty and generate dhparam.pem file.
 # You can specify DIFFIE_HELLMAN=true to force regeneration of that file on first run
