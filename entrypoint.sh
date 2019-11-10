@@ -58,8 +58,8 @@ if [ "$FORCE_HTTPS" == "true" ]; then
 fi
 
 
-# let's substitute $ALLOWED_DOMAINS and $LETSENCRYPT_URL into OpenResty configuration
-envsubst '$ALLOWED_DOMAINS,$LETSENCRYPT_URL' \
+# let's substitute $ALLOWED_DOMAINS, $LETSENCRYPT_URL and $RESOLVER_ADDRESS into OpenResty configuration
+envsubst '$ALLOWED_DOMAINS,$LETSENCRYPT_URL,$RESOLVER_ADDRESS' \
   < ${RESTY_CONF_DIR}/resty-http.conf \
   > ${RESTY_CONF_DIR}/resty-http.conf.copy \
   && mv ${RESTY_CONF_DIR}/resty-http.conf.copy ${RESTY_CONF_DIR}/resty-http.conf
