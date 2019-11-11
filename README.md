@@ -235,10 +235,11 @@ docker run [YOUR_OPTIONS] docker-nginx-auto-ssl
 
 # CHANGELOG
 
-* **18-04-2019** - Added WebSocket support
+* **11-11-2019** - Added gzip support and dropped TLS 1.0 and 1.1 #33
+* **18-04-2019** - Added WebSocket support #22
 * **29-05-2017** - Fixed duplicate redirect location after container restart #2
 * **19-12-2017** - Support for `$SITES` variable   
-* **2-12-2017** - Dropped HSTS by default  
+* **2-12-2017** - Dropped HSTS by default
 * **25-11-2017** - Initial release  
 
 
