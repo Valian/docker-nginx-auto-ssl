@@ -38,7 +38,7 @@ docker logs nginx-auto-ssl
 
 ```yaml
 # docker-compose.yml
-version: '2'
+version: '3'
 services:
   nginx:
     image: valian/docker-nginx-auto-ssl
@@ -50,7 +50,9 @@ services:
       - ssl_data:/etc/resty-auto-ssl
     environment:
       ALLOWED_DOMAINS: 'yourdomain.com'
-      SITES: 'yourdomain.com=myapp:80'
+      SITES: >-
+        yourdomain1.com=myapp1:8080
+        yourdomain2.com=myapp2:8081
   
   # your application, listening on port specified in `SITES` env variable
   myapp:
