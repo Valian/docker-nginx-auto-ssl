@@ -32,6 +32,7 @@ if [ -n "$SITES" ]; then
 
   # for each backend (in form of server_name=endpoint:port) we create proper file
   for NAME_EQ_ENDPOINT in "${SITES_SEPARATED[@]}"; do
+    NAME_EQ_ENDPOINT=${NAME_EQ_ENDPOINT// /} # remove white spaces
     RAW_SERVER_ENDPOINT=${NAME_EQ_ENDPOINT#*=}
     export SERVER_NAME=${NAME_EQ_ENDPOINT%=*}
     export SERVER_ENDPOINT=${RAW_SERVER_ENDPOINT#*//}  # it clears url scheme, like http:// or https://
