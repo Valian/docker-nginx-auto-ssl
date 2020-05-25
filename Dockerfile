@@ -7,6 +7,10 @@ ENV DIFFIE_HELLMAN='' \
     FORCE_HTTPS='true' \
     SITES='' \
     LETSENCRYPT_URL='https://acme-v02.api.letsencrypt.org/directory' \
+    STORAGE_ADAPTER='file' \
+    REDIS_HOST='' \
+    REDIS_DB='' \
+    REDIS_KEY_PREFIX='' \
     RESOLVER_ADDRESS='8.8.8.8'
 
 # Here we install open resty and generate dhparam.pem file.
