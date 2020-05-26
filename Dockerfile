@@ -9,7 +9,8 @@ ENV DIFFIE_HELLMAN='' \
     LETSENCRYPT_URL='https://acme-v02.api.letsencrypt.org/directory' \
     STORAGE_ADAPTER='file' \
     REDIS_HOST='' \
-    REDIS_DB='' \
+    REDIS_PORT='6379' \
+    REDIS_DB='0' \
     REDIS_KEY_PREFIX='' \
     RESOLVER_ADDRESS='8.8.8.8'
 

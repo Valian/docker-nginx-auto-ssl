@@ -76,8 +76,13 @@ Available configuration options:
  | SITES | `db.com=localhost:5432; *.app.com=localhost:8080`, `_=localhost:8080` | Shortcut for defining multiple proxies, in form of `domain1=endpoint1; domain2=endpoint2`. Default template for proxy is [here](https://github.com/Valian/docker-nginx-auto-ssl/blob/master/snippets/server-proxy.conf). Name `_` means default server, just like in nginx configuration |
  | FORCE_HTTPS | `true`, `false` | If `true`, automatically adds location to `resty-server-http.conf` redirecting traffic from http to https. `true` by default. |
  | LETSENCRYPT_URL | `https://acme-v02.api.letsencrypt.org/directory`, `https://acme-staging-v02.api.letsencrypt.org/directory` | Let's Encrypt server URL to use |
- | RESOLVER_ADDRESS | `8.8.8.8`, `127.0.0.53` | DNS resolver used for OCSP stapling. `8.8.8.8` by default. |
- 
+ | RESOLVER_ADDRESS | `8.8.8.8`, `127.0.0.53` | DNS resolver used for OCSP stapling. `8.8.8.8` by default. To disable ipv6 append `ipv6=off`, eg `8.8.8.8 ipv6=off` |
+ | STORAGE_ADAPTER | `file`, `redis` | Location to store generated certificates. Best practice is `redis` in order to avoid I/O blocking in OpenResty and make the certs available across multiple containers (for a load balanced environment) . `file` by default |
+ | REDIS_HOST | `hostname`, `ip address` | The redis host name to use for cert storage. Required if  `STORAGE_ADAPTER=redis`|
+ | REDIS_PORT | `port number` | The redis port number. `6379` by default|
+ | REDIS_DB | `db_number` | The Redis database number used by lua-resty-auto-ssl to save certificates. `0` by default |
+ | REDIS_KEY_PREFIX | `some-prefix` | Prefix all keys stored in Redis with this string. `''` by default |
+
 
 If you want to proxy multiple sites (probably the most common case, that's why I've made it possible to achieve without custom configuration):
 
