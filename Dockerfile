@@ -19,7 +19,7 @@ ENV DIFFIE_HELLMAN='' \
 # also we create fallback ssl keys
 RUN apk --no-cache add bash openssl \
     && /usr/local/openresty/luajit/bin/luarocks install lua-resty-auto-ssl $AUTO_SSL_VERSION \
-    && openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
+    && openssl req -new -newkey rsa:2048 -days 7300 -nodes -x509 \
     -subj '/CN=sni-support-required-for-valid-ssl' \
     -keyout /etc/ssl/resty-auto-ssl-fallback.key \
     -out /etc/ssl/resty-auto-ssl-fallback.crt \

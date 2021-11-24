@@ -1,8 +1,8 @@
-# docker-nginx-auto-ssl
+# nginx-auto-ssl
 *The simpliest solution to add SSL cert to your site*
 
-![build](https://img.shields.io/docker/build/valian/docker-nginx-auto-ssl.svg)
-![build](https://img.shields.io/docker/pulls/valian/docker-nginx-auto-ssl.svg)
+THIS IS A FORK OF: https://github.com/Valian/docker-nginx-auto-ssl
+First goal of the fork is to customize it for the needs of Elestio to include rate limiter & output cache
 
 Docker image for automatic generation of SSL certs using Let's encrypt and Open Resty, with reasonable SSL settings, HTTP/2 and WebSockets support out-of-the-box.
 You can specify allowed domains and simple proxies using ENV variables, and easily override `nginx.conf` to your needs. 
@@ -28,7 +28,7 @@ docker run -d \
   -e ALLOWED_DOMAINS="$DOMAIN" \
   -e SITES="$DOMAIN=$APP_ADDRESS" \
   -v ssl-data:/etc/resty-auto-ssl \
-  valian/docker-nginx-auto-ssl
+  elestio/nginx-auto-ssl
 
 # display logs from container, to check if everything is fine.
 docker logs nginx-auto-ssl
@@ -41,7 +41,7 @@ docker logs nginx-auto-ssl
 version: '2'
 services:
   nginx:
-    image: valian/docker-nginx-auto-ssl
+    image: elestio/nginx-auto-ssl
     restart: on-failure
     ports:
       - 80:80
@@ -73,7 +73,7 @@ Available configuration options:
  | --- | --- | ---|
  | ALLOWED_DOMAINS | `(www\|api).example.com`, `example.com`, `([a-z]+.)?example.com` | Regex pattern of allowed domains. Internally, we're using [ngx.re.match](https://github.com/openresty/lua-nginx-module#ngxrematch). By default we accept all domains |
  | DIFFIE_HELLMAN | `true` | Force regeneration of `dhparam.pem`. If not specified, default one is used. |
- | SITES | `db.com=localhost:5432; *.app.com=localhost:8080`, `_=localhost:8080` | Shortcut for defining multiple proxies, in form of `domain1=endpoint1; domain2=endpoint2`. Default template for proxy is [here](https://github.com/Valian/docker-nginx-auto-ssl/blob/master/snippets/server-proxy.conf). Name `_` means default server, just like in nginx configuration |
+ | SITES | `db.com=localhost:5432; *.app.com=localhost:8080`, `_=localhost:8080` | Shortcut for defining multiple proxies, in form of `domain1=endpoint1; domain2=endpoint2`. Default template for proxy is [here](https://github.com/elestio/nginx-auto-ssl/blob/master/snippets/server-proxy.conf). Name `_` means default server, just like in nginx configuration |
  | FORCE_HTTPS | `true`, `false` | If `true`, automatically adds location to `resty-server-http.conf` redirecting traffic from http to https. `true` by default. |
  | LETSENCRYPT_URL | `https://acme-v02.api.letsencrypt.org/directory`, `https://acme-staging-v02.api.letsencrypt.org/directory` | Let's Encrypt server URL to use |
  | RESOLVER_ADDRESS | `8.8.8.8`, `127.0.0.53` | DNS resolver used for OCSP stapling. `8.8.8.8` by default. To disable ipv6 append `ipv6=off`, eg `8.8.8.8 ipv6=off` |
@@ -94,7 +94,7 @@ docker run -d \
   -p 443:443 \
   -e ALLOWED_DOMAINS=example.com \
   -e SITES='example.com=localhost:5432;*.example.com=localhost:8080' \
-  valian/docker-nginx-auto-ssl
+  elestio/nginx-auto-ssl
 ```
 
 # Customization
@@ -132,13 +132,13 @@ docker run -d \
   -p 80:80 \
   -p 443:443 \
   -v $PWD:/etc/nginx/conf.d
-  valian/docker-nginx-auto-ssl
+  elestio/nginx-auto-ssl
 ```
 
 Custom image way
 
 ```Dockerfile
-FROM valian/docker-nginx-auto-ssl
+FROM elestio/nginx-auto-ssl
 
 # instead of . use directory with your configurations
 COPY . /etc/nginx/conf.d
@@ -176,7 +176,7 @@ If you have custom requirements and other customization options are not enough, 
 
 Example `Dockerfile`:
 ```Dockerfile
-FROM valian/docker-nginx-auto-ssl
+FROM elestio/nginx-auto-ssl
 
 COPY nginx.conf /usr/local/openresty/nginx/conf/
 ```
