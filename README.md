@@ -1,7 +1,7 @@
 # docker-nginx-auto-ssl
 *The simpliest solution to add SSL cert to your site*
 
-![build](https://img.shields.io/docker/build/valian/docker-nginx-auto-ssl.svg)
+![build](https://img.shields.io/docker/cloud/build/valian/docker-nginx-auto-ssl.svg)
 ![build](https://img.shields.io/docker/pulls/valian/docker-nginx-auto-ssl.svg)
 
 Docker image for automatic generation of SSL certs using Let's encrypt and Open Resty, with reasonable SSL settings, HTTP/2 and WebSockets support out-of-the-box.
@@ -237,6 +237,17 @@ Build and run it using
 docker build -t docker-nginx-auto-ssl .
 docker run [YOUR_OPTIONS] docker-nginx-auto-ssl
 ```
+
+## How does it work?
+
+A short walktrough of what's going on here.
+
+- [The docker entrypoint](https://github.com/Valian/docker-nginx-auto-ssl/blob/master/entrypoint.sh#L29) is responsible for preparing a location block for each site declared in `SITES` env variable. [This file is used as a template](https://github.com/Valian/docker-nginx-auto-ssl/blob/master/snippets/server-proxy.conf).
+- when request comes to port 80, it's by default redirected to 443 (HTTP -> HTTPS redirection)
+- when request comes to port 443, HTTPS certificate is resolved by lua code (relevant [file in this repo](https://github.com/Valian/docker-nginx-auto-ssl/blob/master/snippets/resty-server-https.conf) and [source code from lua-resty-auto-ssl](https://github.com/auto-ssl/lua-resty-auto-ssl/blob/master/lib/resty/auto-ssl/ssl_certificate.lua)). If certificate exists for a given domain and is valid, it's returned. Otherwise, a process of generating new certificate starts. It's initialized [here](https://github.com/auto-ssl/lua-resty-auto-ssl/blob/master/lib/resty/auto-ssl/ssl_providers/lets_encrypt.lua) and uses https://github.com/dehydrated-io/dehydrated for all the Let's Encrypt-related communication. It starts challenge process, prepares files for challenge and receives certificates. All of that is done in a couple of seconds, while the original request waits for the response. 
+- challenge files are prepared and served under `/.well-known/acme-challenge/` ([relevant file from this repo ](https://github.com/Valian/docker-nginx-auto-ssl/blob/master/snippets/resty-server-http.conf) and source code from [lua-resty-auto-ssl](https://github.com/auto-ssl/lua-resty-auto-ssl/blob/71259605a3868b287ac0501d5850594b3f1b9cbb/lib/resty/auto-ssl/servers/challenge.lua))
+
+There's more to it, eg locks across all workers to only generate one certificate for a domain at a time, upload of the certificate to shared storage if configured, checking if domain is whitelisted, communication with Let's Encrypt etc. All in all, it's fairly efficient and shouldn't add any noticeable overhead to nginx. 
 
 # CHANGELOG
 
